@@ -1,0 +1,95 @@
+﻿ <!DOCTYPE html>
+<html>
+<head>
+    
+	<title>登录</title>
+	<meta charset="utf-8">
+</head>
+<body >
+
+
+<form onsubmit="_open()" action="/login" method="post" style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
+     {% csrf_token %}
+  
+    <span style="font-size:48px;">学　号：</span><input type="text" id="id" name="id" autocomplete="off" style="width: 402px;height: 72px;border:0.3px solid #000000;font-size:48px;padding-left:10px;">
+    
+	
+	<br><div style="margin-bottom:72px;"></div>
+
+	<span style="font-size:48px;">密　码：</span><input type="password" id="pwd" name="pwd" autocomplete="off"style="width: 402px;height: 72px;border:0.3px solid #000000;font-size:48px;padding-left:10px;">
+	<br><div style="margin-bottom:72px;"></div>
+    
+	<span style="font-size:48px;float:left;">验证码：</span>
+
+    <input type="text" id="code" name="code" autocomplete="off"style="width: 191px;height: 72px;border:0.3px solid #000000;font-size:48px;float:left;padding-left:10px;"> 
+    <img style="height:74px; width:200px;float:left;margin-left:10px; " src={{src}} id="captcha" onclick="myajax() " /><!--不加float属性就往上走?-->
+    
+	<br><div style="margin-bottom:144px;"></div>
+   
+    
+    <input type="hidden" name="webcookie" id="webcookie"/>
+    <input type="hidden" name="randomstr" id="randomstr"/>
+    <input type="hidden" name="hidsjyzm" id="hidsjyzm"/>
+    <input type="hidden" name="Sel_Type" id="Sel_Type"/>
+    <input type="hidden" name="django_type" id="django_type"/>
+	<input type="submit" value="提交" style="width:606px;height:72px;font-size:48px;">
+    <p style="font-size:27px;">技术支持：软件学院钉钉项目组——软工1706高原</p>
+</form>
+<script type="text/javascript" src="static/md5.js"></script>
+<script type="text/javascript">
+        var webcookie = {{ webcookie|safe }};
+        function _open()
+        {
+            document.getElementById("pwd").value = md5(document.getElementById("id").value + md5(document.getElementById("pwd").value).substring(0, 30).toUpperCase() + '10108').substring(0, 30).toUpperCase();
+            document.getElementById("code").value = md5(md5(document.getElementById("code").value.toUpperCase()).substring(0, 30).toUpperCase() + '10108').substring(0, 30).toUpperCase();
+            document.getElementById("webcookie").value=webcookie;
+            document.getElementById("randomstr").value=makerandomstr();
+            document.getElementById("hidsjyzm").value=md5("10108" + '20191' + document.getElementById("randomstr").value).toUpperCase();
+            document.getElementById("Sel_Type").value='STU';
+            document.getElementById("django_type").value='course';
+        }
+        var _updata=false;
+        function myajax()
+        {   
+        if (_updata==false)
+            {
+            _updata=true;
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange=function()
+                {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                	{
+                    var data = xmlhttp.responseText;
+                    data = eval("(" + data + ")");   //转换为json对象
+                    if (data.src == 'None')
+                        location.reload();//刷新界面
+                    else
+                        {
+                        document.getElementById("captcha").src = data.src;
+                        webcookie=data.webcookie;
+                        }
+                    _updata=false;
+                    }
+                } 
+            xmlhttp.open("GET","/captcha?t=" + Math.random(),true);
+            xmlhttp.send();
+            }
+    	}
+
+    function makerandomstr()
+         {
+         var text = "";
+         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+         for( var i=0; i < 15; i++ )
+         text += possible.charAt(Math.floor(Math.random() * possible.length));
+         return text;
+         }
+
+
+</script>
+
+
+</body>
+</html>

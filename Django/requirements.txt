@@ -1,0 +1,4 @@
+django ==1.11.27
+setting
+MIDDLEWARE_CLASS
+Ìí¼Ó# 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',

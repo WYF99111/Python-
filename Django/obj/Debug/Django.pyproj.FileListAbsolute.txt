@@ -1,0 +1,1 @@
+D:\VSnode\Django\Django\obj\Debug\Django.pyproj.CoreCompileInputs.cache

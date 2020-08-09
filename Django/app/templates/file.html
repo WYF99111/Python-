@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    
+</head>
+<body>
+
+    <table border="1" title="">
+    <tr style="text-align:center"> <td colspan="4">实验</td></tr>
+    {% for i in all_file %}
+        <tr>
+        {% for j in i%}        
+            <td>{{j}}</td> 
+        {% endfor %}
+            <td><a onclick="look(this)">预览</a></td>
+            <td><a onclick="mydownload(this)">下载</a></td>
+        </tr>
+    {% endfor %}
+
+    </table>
+    <form action="/upload" method="post" enctype="multipart/form-data"  target="id_iframe" >
+        {% csrf_token %}
+        <input type="file" name="upload">
+        <input type="submit" >
+    </form>
+    <iframe id="id_iframe" name="id_iframe" style="display:none;"></iframe>
+    
+     <script>
+         function mydownload(e)
+         {
+          window.open("need_file/?name=" + e.parentNode.parentNode.children[0].innerHTML, "_blank");      
+         }
+
+         function look(e)
+         {
+          window.open("static/file/" + e.parentNode.parentNode.children[0].innerHTML, "_blank");      
+         }
+
+         
+     </script>
+  
+        
+   
+</body>
+</html>

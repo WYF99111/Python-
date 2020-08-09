@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+        <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.10.3/dingtalk.open.js"></script>
+		<script>
+            
+			dd.ready(function() {
+				dd.runtime.permission.requestAuthCode({
+					corpId: "ding15fa0187e5c1613635c2f4657eb6378f", // 企业id
+					onSuccess: function(info) {
+                        code = info.code // 通过该免登授权码可以获取用户身份
+						var xmlhttp = new XMLHttpRequest();
+						xmlhttp.onreadystatechange = function() {
+							if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+								var data = xmlhttp.responseText;
+								alert(data)
+							}
+						}
+						xmlhttp.open("GET", "/app?code="+code , true);
+						xmlhttp.send();
+					}
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+
+	</body>
+
+</html>

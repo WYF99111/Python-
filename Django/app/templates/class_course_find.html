@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>班级课表查询</title>
+    <style type="text/css">
+        option {
+        width:362px;
+        padding-left:96px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="return _open();" action="/get_class_course" method="post" style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
+        {% csrf_token %}
+        
+        <span style="font-size:48px;">年　级：</span>
+        <select id="group" style="width: 407px;height: 72px;font-size:48px;text-align-last:center;" onchange="choose()">
+        </select>
+
+        <br><div style="margin-bottom:72px;"></div>
+
+        <span style="font-size:48px;">班　级：</span>
+        <select name="class" id="class"  style="width: 407px;height: 72px;font-size:48px;text-align-last:center;">
+		</select>
+
+        <br><div style="margin-bottom:72px;"></div>
+    
+	    <span style="font-size:48px;float:left;">验证码：</span>
+
+        <input type="text" id="code" name="code" autocomplete="off"style="width: 185px;height: 72px;border:0.3px solid #000000;font-size:48px;float:left;padding-left:10px;"> 
+        <img style="height:74px; width:200px;float:left;margin-left:10px; " src={{src}} id="captcha" onclick="myajax() " /><!--不加float属性就往上走?-->
+
+        <br><div style="margin-bottom:144px;"></div>
+
+        <input type="hidden" name="webcookie" id="webcookie"/>
+
+        <input type="submit" value="提交" style="width:606px;height:72px;font-size:48px;">
+         <p style="font-size:27px;">技术支持：软件学院钉钉项目组——软工1706高原</p>
+     </form>
+
+
+
+    <script type="text/javascript">
+         document.getElementById("group").innerHTML = '<option value="01">　　　17级</option><option value="02">　　　18级</option><option value="03">　　　19级</option>';
+         document.getElementById("class").innerHTML = '<option value="2017240101">软件工程1701班</option><option value="2017240102">软件工程1702班</option><option value="2017240103">软件工程1703班</option><option value="2017240104">软件工程1704班</option><option value="2017240105">软件工程1705班</option><option value="2017240106">软件工程1706班</option><option value="2017240107">软件工程1707班</option><option value="2017240108">软件工程1708班</option><option value="2017240109">软件工程1709班</option><option value="2017240110">软件工程1710班</option><option value="2017240111">软件工程1711班</option><option value="2017240112">软件工程1712班</option>';
+    
+        var webcookie = {{ webcookie|safe }};
+
+        function _open()
+        {
+            if(document.getElementById("group").value=='')
+                {
+                 alert("请选择年级");
+                 return false;
+                }
+            if(document.getElementById("class").value=='')
+                {
+                alert("请选择班级");
+                return false;
+                }
+            document.getElementById("webcookie").value=webcookie;
+            return true;
+        }
+
+        function choose()
+        {
+        
+        switch(document.getElementById("group").value)
+            {
+            case "01": 
+                      document.getElementById("class").innerHTML='<option value="2017240101">软件工程1701班</option><option value="2017240102">软件工程1702班</option><option value="2017240103">软件工程1703班</option><option value="2017240104">软件工程1704班</option><option value="2017240105">软件工程1705班</option><option value="2017240106">软件工程1706班</option><option value="2017240107">软件工程1707班</option><option value="2017240108">软件工程1708班</option><option value="2017240109">软件工程1709班</option><option value="2017240110">软件工程1710班</option><option value="2017240111">软件工程1711班</option><option value="2017240112">软件工程1712班</option>';
+                      break;
+            case "02":
+                      document.getElementById("class").innerHTML='<option value="18280101">软件工程1801班</option><option value="18280102">软件工程1802班</option><option value="18280103">软件工程1803班</option><option value="18280104">软件工程1804班</option><option value="18280105">软件工程1805班</option><option value="18280106">软件工程1806班</option><option value="18280107">软件工程1807班</option><option value="18280108">软件工程1808班</option><option value="18280109">软件工程1809班</option><option value="18280110">软件工程1810班</option><option value="18280111">软件工程1811班</option><option value="18280112">软件工程1812班</option>';
+                      break;
+            case "03":
+                      document.getElementById("class").innerHTML='<option value="19280101">软件工程1901班</option><option value="19280102">软件工程1902班</option><option value="19280103">软件工程1903班</option><option value="19280104">软件工程1904班</option><option value="19280105">软件工程1905班</option><option value="19280106">软件工程1906班</option><option value="19280107">软件工程1907班</option><option value="19280108">软件工程1908班</option><option value="19280109">软件工程1909班</option><option value="19280110">软件工程1910班</option><option value="19280111">软件工程1911班</option><option value="19280112">软件工程1912班</option>';
+                      break;
+            }
+
+
+
+        }
+
+        var _updata=false;
+        function myajax()
+        {   
+        if (_updata==false)
+            {
+            _updata=true;
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange=function()
+                {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                	{
+                    var data = xmlhttp.responseText;
+                    data = eval("(" + data + ")");   //转换为json对象
+                    if (data.src == 'None')
+                        location.reload();//刷新界面
+                    else
+                        {
+                        document.getElementById("captcha").src = data.src;
+                        webcookie=data.webcookie;
+                        }
+                    _updata=false;
+                    }
+                } 
+            xmlhttp.open("GET","/captcha?t=" + Math.random(),true);
+            xmlhttp.send();
+            }
+    	}
+    </script>
+</body>
+</html>

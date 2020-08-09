@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>节次课表查询</title>
+    <style type="text/css">
+        option {
+        width:362px;
+        padding-left:96px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="_open()" action="/get_section_course" method="post" style="position: absolute;left: 50%;top: 45%;transform: translate(-50%,-50%);">
+        {% csrf_token %}
+        <span style="font-size:48px;">院　系：</span>
+        <select name="belong"  style="width: 537px;height: 72px;font-size:48px;text-align-last:center;">
+            <option value="24">软件学院</option>
+            <option value="30">现代教育技术学院</option>
+            <option value="09">计算机与信息技术学院</option>
+            <option value="BA">大数据学院</option>
+            <option value="01">文学院</option>
+            <option value="02">历史文化学院</option>
+            <option value="03">哲学社会学学院</option>
+            <option value="04">政治与公共管理学院</option>
+            <option value="05">外国语学院</option>
+            <option value="06">教育科学学院</option>
+            <option value="07">法学院</option>
+            <option value="08">数学科学学院</option>
+            <option value="10">物理电子工程学院</option>
+            <option value="11">化学化工学院</option>
+            <option value="12">生命科学学院</option>
+            <option value="13">环境与资源学院</option>
+            <option value="14">经济与管理学院</option>
+            <option value="15">体育学院</option>
+            <option value="16">音乐学院</option>
+            <option value="17">美术学院</option>
+            <option value="27">继续教育学院</option>
+            <option value="54">国际教育交流学院</option>
+            <option value="18">初民学院</option>
+            <option value="19">电力工程系</option>
+            <option value="20">动力工程系</option>
+            <option value="21">自动化系</option>
+            <option value="22">土木工程系</option>
+            <option value="23">电子信息工程系</option>
+            <option value="25">环境工程系</option>
+            <option value="26">工程管理系</option>
+            <option value="61">马克思主义学院</option>
+            <option value="56">新闻学院</option>
+            <option value="59">省体校</option>
+            <option value="60">公共体育学院</option>
+            <option value="57">物理教研室</option>
+            <option value="55">高数教研室</option>
+            <option value="53">大外部</option>
+        </select>
+        
+        <br><div style="margin-bottom:72px;"></div>
+
+        <span style="font-size:48px;">周　次：</span>
+        <select name="week"  style="width: 537px;height: 72px;font-size:48px;text-align-last:center;">
+            <option value="01">　　　第 1 周</option>
+            <option value="02">　　　第 2 周</option>
+            <option value="03">　　　第 3 周</option>
+            <option value="04">　　　第 4 周</option>
+            <option value="05">　　　第 5 周</option>
+            <option value="06">　　　第 6 周</option>
+            <option value="07">　　　第 7 周</option>
+            <option value="08">　　　第 8 周</option>
+            <option value="09">　　　第 9 周</option>
+            <option value="10">　　　第 10 周</option>
+            <option value="11">　　　第 11 周</option>
+            <option value="12">　　　第 12 周</option>
+            <option value="13">　　　第 13 周</option>
+            <option value="14">　　　第 14 周</option>
+            <option value="15">　　　第 15 周</option>
+            <option value="16">　　　第 16 周</option>
+            <option value="17">　　　第 17 周</option>
+            <option value="18">　　　第 18 周</option>
+            <option value="19">　　　第 19 周</option>
+        </select>
+
+        <br><div style="margin-bottom:72px;"></div>
+
+        <span style="font-size:48px;">星　期：</span>
+        <select name="day"  style="width: 537px;height: 72px;font-size:48px;text-align-last:center;">
+			<option value="1">　　　星 期 一</option>
+			<option value="2">　　　星 期 二</option>
+			<option value="3">　　　星 期 三</option>
+			<option value="4">　　　星 期 四</option>
+			<option value="5">　　　星 期 五</option>
+			<option value="6">　　　星 期 六</option>
+			<option value="7">　　　星 期 日</option>
+		</select>
+
+        <br><div style="margin-bottom:72px;"></div>
+
+        <span style="font-size:48px;">节　次：</span>
+        <select name="section"  style="width: 537px;height: 72px;font-size:48px;text-align-last:center;">
+            <option value="01">　　　第1大节</option>
+            <option value="03">　　　第2大节</option>
+            <option value="05">　　　第3大节</option>
+            <option value="07">　　　第4大节</option>
+            <option value="09">　　　第5大节</option>
+        </select>
+
+        <br><div style="margin-bottom:72px;"></div>
+    
+	    <span style="font-size:48px;float:left;">验证码：</span>
+
+        <input type="text" id="code" name="code" autocomplete="off"style="width: 315px;height: 72px;border:0.3px solid #000000;font-size:48px;float:left;padding-left:10px;"> 
+        <img style="height:74px; width:200px;float:left;margin-left:10px; " src={{src}} id="captcha" onclick="myajax() " /><!--不加float属性就往上走?-->
+
+        <br><div style="margin-bottom:144px;"></div>
+
+        <input type="hidden" name="webcookie" id="webcookie"/>
+        <input type="submit" value="提交" style="width:736px;height:72px;font-size:48px;">
+         <p style="font-size:33px; text-align:center">技术支持：软件学院钉钉项目组——软工1706高原</p>
+     </form>
+    <script type="text/javascript">
+        var webcookie = {{ webcookie|safe }};
+        function _open()
+        {
+            document.getElementById("webcookie").value=webcookie;
+        }
+
+        var _updata=false;
+        function myajax()
+        {   
+        if (_updata==false)
+            {
+            _updata=true;
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange=function()
+                {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                	{
+                    var data = xmlhttp.responseText;
+                    data = eval("(" + data + ")");   //转换为json对象
+                    if (data.src == 'None')
+                        location.reload();//刷新界面
+                    else
+                        {
+                        document.getElementById("captcha").src = data.src;
+                        webcookie=data.webcookie;
+                        }
+                    _updata=false;
+                    }
+                } 
+            xmlhttp.open("GET","/captcha?t=" + Math.random(),true);
+            xmlhttp.send();
+            }
+    	}
+    </script>
+</body>
+</html>
